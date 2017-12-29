@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <button id="try">点我试试</button>
+    <button id = "nestTry">再点一下试试哦</button>
+  <script type="text/javascript">  
+    document.getElementById("try").onclick=function(){
+         var worker = new Worker('worker.js');
+        worker.onmessage = function(evt){
+            alert("success" + evt.data);
+            worker.terminate();
+        };
+        worker.onerror = function(e){
+            alert('demo出错了！出错原因是：' + e.message);
+            worker.terminate();
+        };
+        worker.postMessage('这是webworker的demo！');  
+    }
+    document.getElementById('nestTry').onclick = function(){
+      var workers = new Worker('workers.js');
+      workers.onmessage = function(evt){
+        alert("success&&"+ evt.data)
+      }
+      workers.postMessage('close的demo')
+    }
+  </script>
+</body>
+</html>
